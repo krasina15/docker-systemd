@@ -4,6 +4,7 @@ WantedBy=multi-user.target
 # %n == The full unit name, e.g. "verdaccio.service".
 # %p == The unit's prefix, e.g. "verdaccio".
 
+
 [Unit]
 Description=Verdaccio is a simple, zero-config-required local private NPM registry.
 Documentation=https://verdaccio.org/
