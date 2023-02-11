@@ -1,0 +1,25 @@
+[Install]
+WantedBy=multi-user.target
+
+# %n == The full unit name, e.g. "grafana.service".
+# %p == The unit's prefix, e.g. "grafana".
+
+[Unit]
+Description=Grafana is the open source analytics & monitoring solution for every database
+Documentation=http://grafana.com/
+Requires=docker.service
+After=influxdb.service
+
+[Service]
+# Report variables.
+ExecStartPre=-/usr/bin/env
+ExecStartPre=-/usr/bin/docker stop grafana
+ExecStartPre=-/usr/bin/docker rm grafana
+ExecStart=/usr/bin/docker run  --name grafana  --rm  --network tick  --publish 3000:3000  --volume /etc/localtime:/etc/localtime:ro  --volume /data/telemetry/services/grafana/conf:/etc/grafana:ro,z  --volume /data/telemetry/services/grafana/data/:/var/lib/grafana:z  --volume /data/telemetry/services/grafana/log:/var/log/grafana:z  --volume /data/telemetry/services/grafana/plugins:/var/lib/grafana/plugins:z  grafana/grafana:6.6.0-ubuntu
+
+# Restart 2 seconds after docker run exited with an error status.
+Restart=always
+RestartSec=2s
+
+[Install]
+WantedBy=multi-user.target

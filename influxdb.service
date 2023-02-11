@@ -1,0 +1,22 @@
+# %n == The full unit name, e.g. "influxdb.service".
+# %p == The unit's prefix, e.g. "influxdb".
+
+[Unit]
+Description=An open-source time series database developed by InfluxData
+Documentation=http://influxdb.com/
+Requires=docker.service
+After=docker.service
+
+[Service]
+# Report variables.
+ExecStartPre=-/usr/bin/env
+ExecStartPre=-/usr/bin/docker stop influxdb
+ExecStartPre=-/usr/bin/docker rm influxdb
+ExecStart=/usr/bin/docker run  --name influxdb  --rm  --network tick  --publish 8086:8086  --volume /etc/localtime:/etc/localtime:ro  --volume /data/telemetry/services/influxdb/conf:/etc/influxdb:ro,z  --volume /data/telemetry/services/influxdb/stuff:/var/lib/influxdb:z  --volume /data/telemetry/services/influxdb/log:/var/log/influxdb:z  influxdb:1.7
+
+# Restart 2 seconds after docker run exited with an error status.
+Restart=always
+RestartSec=2s
+
+[Install]
+WantedBy=multi-user.target
