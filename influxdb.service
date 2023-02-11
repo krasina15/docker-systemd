@@ -7,7 +7,6 @@ Documentation=http://influxdb.com/
 Requires=docker.service
 After=docker.service
 
-
 [Service]
 # Report variables.
 ExecStartPre=-/usr/bin/env
