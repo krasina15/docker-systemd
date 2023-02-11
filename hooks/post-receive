@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-git push --mirror --quiet git@github.com:krasina15/docker-systemd.git &>/dev/null &
-echo "GitHub mirror initiated .."
