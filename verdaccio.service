@@ -1,0 +1,31 @@
+[Install]
+WantedBy=multi-user.target
+
+# %n == The full unit name, e.g. "verdaccio.service".
+# %p == The unit's prefix, e.g. "verdaccio".
+
+[Unit]
+Description=Verdaccio is a simple, zero-config-required local private NPM registry.
+Documentation=https://verdaccio.org/
+Requires=docker.service
+
+[Service]
+# Report variables.
+ExecStartPre=-/usr/bin/env
+ExecStartPre=-/usr/bin/docker stop verdaccio
+ExecStartPre=-/usr/bin/docker rm verdaccio
+ExecStart=/usr/bin/docker run  \
+	--name verdaccio  \
+	--rm  \
+	--publish 4873:4873  \
+	--volume /etc/localtime:/etc/localtime:ro  \
+	--volume /data/verdaccio/storage:/verdaccio/storage:z  \
+	--volume /data/verdaccio/conf:/verdaccio/conf:z  \
+	verdaccio/verdaccio:5.20
+
+# Restart 2 seconds after docker run exited with an error status.
+Restart=always
+RestartSec=2s
+
+[Install]
+WantedBy=multi-user.target
