@@ -1,0 +1,58 @@
+storage: /verdaccio/storage
+
+plugins: /verdaccio/plugins
+
+i18n:
+  web: en-US
+
+
+web:
+  title: private npm registry
+  enable: true
+  gravatar: false
+  scope: '@scope'
+  sort_packages: asc
+  rateLimit:
+    windowMs: 50000
+    max: 1000
+  pkgManagers:
+    - npm
+    - yarn
+    - pnpm
+  login: true
+  html_cache: true
+  showInfo: true
+  showSettings: true
+  showThemeSwitch: true
+  showFooter: true
+  showSearch: true
+  showDownloadTarball: true
+  showRaw: true
+
+
+
+url_prefix: '/'
+
+auth:
+  htpasswd:
+    file: /verdaccio/conf/htpasswd
+    max_users: -1
+uplinks:
+  npmjs:
+    url: https://registry.npmjs.org/
+packages:
+  '@*/*':
+    #access: $authenticated
+    access: $authenticated
+    publish: $authenticated
+    proxy: npmjs
+  '**':
+    access: $authenticated
+    publish: $authenticated
+    proxy: npmjs
+
+'private-package-*':
+    access: reader publisher
+    publish: reader publisher
+
+log: { type: stdout, format: pretty, level: http }

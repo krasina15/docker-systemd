@@ -16,12 +16,14 @@ ExecStartPre=-/usr/bin/docker stop verdaccio
 ExecStartPre=-/usr/bin/docker rm verdaccio
 ExecStart=/usr/bin/docker run  \
 	--name verdaccio  \
+        -e VERDACCIO_PUBLIC_URL='https://host.name/' \
 	--rm  \
-	--publish 4873:4873  \
+	--publish 127.0.0.1:4873:4873  \
 	--volume /etc/localtime:/etc/localtime:ro  \
 	--volume /data/verdaccio/storage:/verdaccio/storage:z  \
+	--volume /data/verdaccio/plugins:/verdaccio/plugins:z  \
 	--volume /data/verdaccio/conf:/verdaccio/conf:z  \
-	verdaccio/verdaccio:5.20
+	verdaccio/verdaccio:5.x-next
 
 # Restart 2 seconds after docker run exited with an error status.
 Restart=always
